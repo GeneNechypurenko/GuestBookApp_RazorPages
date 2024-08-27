@@ -1,0 +1,39 @@
+﻿@page
+@model GuestBookApp_RazorPages.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Guest Book</h1>
+
+    @if (HttpContext.Session.GetString("Username") != null)
+    {
+        <form method="post">
+            <div class="form-group">
+                <textarea asp-for="MessageVM.Text" class="form-control" placeholder="Enter your message here..."></textarea>
+                <span asp-validation-for="MessageVM.Text" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Message</button>
+            <a asp-page="/Logout" class="btn btn-secondary">Logout</a>
+        </form>
+    }
+    else
+    {
+        <a asp-page="/Login" class="btn btn-primary">Login</a>
+        <a asp-page="/Register" class="btn btn-secondary">Register</a>
+    }
+</div>
+
+<hr />
+
+@foreach (var message in Model.Messages)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">@message.Username</h5>
+            <p class="card-text">@message.Text</p>
+            <p class="card-text"><small class="text-muted">@message.PostedAt</small></p>
+        </div>
+    </div>
+}
